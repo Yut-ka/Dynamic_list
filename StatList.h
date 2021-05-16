@@ -52,35 +52,42 @@ public:
 		pTemp->inf = inf;
 		return 1;
 	}
-	std::string Delete(Stat_List* list, int t) {
-		if (t < 1) return "Uncorrect enter!";
+	std::string Delete(Stat_List* list, int inf) {
 		TList_Item* pCurrent = list->pHead;
 		TList_Item* pPrev;
-		for (int i = 0; i < t; i++) {
-			if (pCurrent->next == NULL) return "The number with index : | " + std::to_string(t) + " | not found.";
+		while(pCurrent != NULL) {
+			if (pCurrent->inf == inf) {
+				pPrev->next = pCurrent->next;
+				delete(pCurrent);
+				return "The element was deleted.";
+			}
 			pPrev = pCurrent;
 			pCurrent = pCurrent->next;
 		}
-		pPrev->next = pCurrent->next;
-		delete(pCurrent);
-		return "The number with index : | " + std::to_string(t) + " | was deleted.";
+		return "The element not found.";
 	}
 
-	std::string Delete(Stat_List* list, int t, Stack* stack) {
-		if (t < 1) return "Uncorrect enter!";
+	TList_Item* Pop(Stat_List* list, int inf) {
 		TList_Item* pCurrent = list->pHead;
 		TList_Item* pPrev;
-		for (int i = 0; i < t; i++) {
-			if (pCurrent->next == NULL) return "The number with index : | " + std::to_string(t) + " | not found.";
+		while (pCurrent != NULL) {
+			if (pCurrent->inf == inf) {
+				pPrev->next = pCurrent->next;
+				return pCurrent;
+			}
 			pPrev = pCurrent;
 			pCurrent = pCurrent->next;
 		}
-		pPrev->next = pCurrent->next;
-
-		pCurrent->next = stack->sp;
-		stack->sp = pCurrent;
-		return "The number with index : | " + std::to_string(t) + " | was added at Stack.";
+		return NULL;
 	}
+
+	void Push(Stack* stack, TList_Item* a) {
+		if (a != NULL) {
+			a->next = stack->sp;
+			stack->sp = a;
+		}
+	}
+
 
 	std::string Get(Stat_List* list, int inf) {
 		TList_Item* pCurrent = list->pHead;
